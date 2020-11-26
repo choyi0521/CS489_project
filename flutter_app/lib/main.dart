@@ -107,19 +107,15 @@ class _ListPageState extends State<ListPage> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             IconButton(
-              icon: Icon(Icons.home, color: Colors.white),
+              icon: Icon(Icons.people, color: Colors.white),
               onPressed: () {},
             ),
             IconButton(
-              icon: Icon(Icons.blur_on, color: Colors.white),
+              icon: Icon(Icons.message, color: Colors.white),
               onPressed: () {},
             ),
             IconButton(
-              icon: Icon(Icons.hotel, color: Colors.white),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: Icon(Icons.account_box, color: Colors.white),
+              icon: Icon(Icons.favorite, color: Colors.white),
               onPressed: () {},
             )
           ],
@@ -132,7 +128,7 @@ class _ListPageState extends State<ListPage> {
       title: Text(widget.title),
       actions: <Widget>[
         IconButton(
-          icon: Icon(Icons.list),
+          icon: Icon(Icons.menu),
           onPressed: () {},
         )
       ],
