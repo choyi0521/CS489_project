@@ -1,6 +1,8 @@
 import 'model/post.dart';
+import 'chat_page.dart';
 import 'package:flutter/material.dart';
 import 'detail_page.dart';
+import 'nav_drawer.dart';
 
 void main() => runApp(new MyApp());
 
@@ -28,55 +30,139 @@ class ListPage extends StatefulWidget {
 }
 
 class _ListPageState extends State<ListPage> {
+  int _selectedIndex = 1;
   List posts;
+  List favPosts;
+  List chatPosts;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   void initState() {
     posts = getPosts();
+    updateFavPosts();
+    updateChatPosts();
+
     super.initState();
+  }
+
+  void updateFavPosts(){
+    favPosts=<Post>[];
+    for (var i=0; i<posts.length; i++){
+      if (posts[i].isFavorite) favPosts.add(posts[i]);
+    }
+  }
+  void updateChatPosts(){
+    chatPosts=<Post>[];
+    for (var i=0; i<posts.length; i++){
+      if (posts[i].onChannel) chatPosts.add(posts[i]);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    ListTile makeListTile(Post post) => ListTile(
-          contentPadding:
-              EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-          leading: Container(
-            padding: EdgeInsets.only(right: 2.0),
-            decoration: new BoxDecoration(
-                border: new Border(
-                    right: new BorderSide(width: 1.0, color: Colors.white24))),
-            child: IconButton(
-              icon:post.is_favorite ? Icon(Icons.favorite, color: Colors.red) : Icon(Icons.favorite_border, color: Colors.white),
-              onPressed: (){
-                setState(() {
-                  post.is_favorite = !post.is_favorite;
-                });
-              },
-            ),
-          ),
-          title: Text(
-            post.title,
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          ),
-          // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
-
-          subtitle: Row(
-            children: <Widget>[
-              Expanded(
-                flex: 4,
-                child: Text(post.category, style: TextStyle(color: Colors.yellow))),
-            ],
-          ),
-          trailing:
-              Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0),
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => DetailPage(post: post)));
+    updateFavPosts();
+    updateChatPosts();
+    ListTile makeListTile(Post post) => _selectedIndex<2?_selectedIndex==0?
+    ListTile(
+      contentPadding:
+      EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+      leading: Container(
+        child: Container(
+            width: 40.0,
+            height: 40.0,
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                    fit: BoxFit.fill,
+                    image: NetworkImage(post.messages.last.user.avatar)
+                )
+            )
+        ),
+      ),
+      title: Text(
+        post.title,
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      ),
+      subtitle: Row(
+        children: <Widget>[
+          Expanded(
+              flex: 4,
+              child: Text(post.messages.last.text, style: TextStyle(color: Colors.white70))),
+        ],
+      ),
+      trailing:
+      Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0),
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ChatPage(post: post)));
+      },
+    ):
+    ListTile(
+      contentPadding:
+      EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+      title: Text(
+        post.title,
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      ),
+      subtitle: Row(
+        children: <Widget>[
+          Expanded(
+              flex: 4,
+              child: Text(post.category, style: TextStyle(color: Colors.yellow))),
+        ],
+      ),
+      trailing:
+      Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0),
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DetailPage(post: post)));
+      },
+    ):
+    ListTile(
+      contentPadding:
+          EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+      leading: Container(
+        padding: EdgeInsets.only(right: 2.0),
+        decoration: BoxDecoration(
+            border: Border(right: BorderSide(width: 1.0, color: Colors.white24))),
+        child: IconButton(
+          icon:post.isFavorite ? Icon(Icons.favorite, color: Colors.red) : Icon(Icons.favorite_border, color: Colors.white),
+          onPressed: (){
+            setState(() {
+              post.isFavorite = !post.isFavorite;
+            });
           },
-        );
+        ),
+      ),
+      title: Text(
+        post.title,
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      ),
+      subtitle: Row(
+        children: <Widget>[
+          Expanded(
+            flex: 4,
+            child: Text(post.category, style: TextStyle(color: Colors.yellow))),
+        ],
+      ),
+      trailing:
+          Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0),
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DetailPage(post: post)));
+      },
+    );
 
     Card makeCard(Post post) => Card(
           elevation: 8.0,
@@ -87,7 +173,26 @@ class _ListPageState extends State<ListPage> {
           ),
         );
 
-    final makeBody = Container(
+    final tab1 = chatPosts.length == 0 ?
+    Center(
+        child:Text('Empty', style: TextStyle(color: Colors.white24, fontSize: 30))
+    ): Container(
+      // decoration: BoxDecoration(color: Color.fromRGBO(58, 66, 86, 1.0)),
+      child: ListView.builder(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        itemCount: chatPosts.length,
+        itemBuilder: (BuildContext context, int index) {
+          return makeCard(chatPosts[index]);
+        },
+      ),
+    );
+
+    final tab2 = posts.length == 0 ?
+    Center(
+        child:Text('Empty', style: TextStyle(color: Colors.white24, fontSize: 30))
+    ):
+    Container(
       // decoration: BoxDecoration(color: Color.fromRGBO(58, 66, 86, 1.0)),
       child: ListView.builder(
         scrollDirection: Axis.vertical,
@@ -99,46 +204,60 @@ class _ListPageState extends State<ListPage> {
       ),
     );
 
-    final makeBottom = Container(
-      height: 55.0,
-      child: BottomAppBar(
-        color: Color.fromRGBO(58, 66, 86, 1.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            IconButton(
-              icon: Icon(Icons.people, color: Colors.white),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: Icon(Icons.message, color: Colors.white),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: Icon(Icons.favorite, color: Colors.white),
-              onPressed: () {},
-            )
-          ],
-        ),
+    final tab3 = favPosts.length == 0 ?
+    Center(
+        child:Text('Empty', style: TextStyle(color: Colors.white24, fontSize: 30))
+    ):
+    Container(
+      // decoration: BoxDecoration(color: Color.fromRGBO(58, 66, 86, 1.0)),
+      child: ListView.builder(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        itemCount: favPosts.length,
+        itemBuilder: (BuildContext context, int index) {
+          return makeCard(favPosts[index]);
+        },
       ),
     );
+
+    final List<Widget> _widgetOptions = <Widget>[
+      tab1,
+      tab2,
+      tab3,
+    ];
+
     final topAppBar = AppBar(
       elevation: 0.1,
       backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
-      title: Text(widget.title),
-      actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: () {},
-        )
-      ],
+      title: Text(widget.title)
     );
 
     return Scaffold(
       backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
       appBar: topAppBar,
-      body: makeBody,
-      bottomNavigationBar: makeBottom,
+      drawer: NavDrawer(),
+      body:  Center(
+        child: _widgetOptions.elementAt(_selectedIndex),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items:  <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.message),
+            title: Text('Discussion'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: Text('Home'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite),
+            title: Text('Favorites'),
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.amber[800],
+        onTap: _onItemTapped,
+      ),
     );
   }
 }
