@@ -32,6 +32,7 @@ List getPosts() {
     Post(
         title: "AI copyright",
         category: "Artificial Intelligence",
+        imagePath: "assets/default_post_image.jpg",
         content:
         "  AI has made a painting through deep learning technology. Microsoft recently sold a painting of AI in 8000 dollars. China court also admitted that AI has a right for its creative derivative.",
         surveys:[
