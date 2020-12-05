@@ -3,6 +3,9 @@ import 'chat_page.dart';
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'dart:math';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DetailPage extends StatefulWidget {
   DetailPage({Key key, this.post}) : super(key: key);
@@ -105,6 +108,11 @@ class _DetailPageState extends State<DetailPage> {
     final bottomContentText = Text(
       widget.post.content,
       style: TextStyle(fontSize: 18.0),
+    );
+    final link = InkWell(
+        child: new Text(widget.post.linktext,
+            style: TextStyle(color: Colors.blue, decoration: TextDecoration.underline,), ),
+        onTap: () => launch(widget.post.link)
     );
     final survey = Container(
       //padding: EdgeInsets.only(top: 2.0, bottom: 2.0),
@@ -255,6 +263,7 @@ class _DetailPageState extends State<DetailPage> {
           <Widget>[
             bottomContentText,
             SizedBox(height: 10.0),
+            link,
             survey,
             SizedBox(height: 10.0),
             statButton
