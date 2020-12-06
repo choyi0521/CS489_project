@@ -3,11 +3,20 @@ import 'chat_page.dart';
 import 'package:flutter/material.dart';
 import 'detail_page.dart';
 import 'nav_drawer.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() => runApp(new MyApp());
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(new MyApp());
+}
+//void main() => runApp(new MyApp());
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+  //Firestore firestore = Firestore.instance;
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(

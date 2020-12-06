@@ -12,8 +12,9 @@ class Post {
   List<ChatMessage> messages;
   String link;
   String linktext;
+  int postnum;
 
-  Post({this.title, this.category, this.imagePath, this.content, this.surveys, this.messages, this.linktext, this.link}){
+  Post({this.title, this.category, this.imagePath, this.content, this.surveys, this.messages, this.linktext, this.link, this.postnum}){
     surveys ??= [];
     messages ??= [
       ChatMessage(
@@ -43,7 +44,8 @@ List getPosts() {
           Survey(question: "Do you agree with the opinion that AI's works are also artistic as every artistic outcome is influenced by others?")
         ],
         link: "https://www.asiae.co.kr/article/2017021508251055703",
-        linktext: "What if AI claims for copyright?"
+        linktext: "What if AI claims for copyright?",
+        postnum: 1,
     ),
     Post(
         title: "Autonomous car",
@@ -57,7 +59,8 @@ List getPosts() {
           Survey(question: "Do you think autonomous vehicles will cause accidents or other ethical problems than human drivers?")
         ],
         link: "http://www.coincatmedia.com/7949",
-        linktext: "Who's to blame when a self-driving car has an accident?"),
+        linktext: "Who's to blame when a self-driving car has an accident?",
+        postnum: 2),
     Post(
         title: "AI interview for hiring",
         category: "Artificial Intelligence",
@@ -71,7 +74,8 @@ List getPosts() {
           Survey(question: "What if there is an AI that can consider sophisticated factors like emotions and gestures. Do you agree that this kind of AI can be better than human?")
         ],
         link: "https://slate.com/technology/2020/10/artificial-intelligence-job-interviews.html",
-        linktext: "Should Robots be conducting job interviews?"),
+        linktext: "Should Robots be conducting job interviews?",
+        postnum: 3),
     Post(
         title: "Gig economy",
         category: "Telecommunication",
@@ -85,7 +89,8 @@ List getPosts() {
           Survey(question: "Is gig economy also has the similar form of nowadays working environment? Especially on ethical side?")
         ],
         link: "https://www.flexjobs.com/blog/post/what-is-the-gig-economy-v2/",
-        linktext: "What is Gig economy, pros&cons"),
+        linktext: "What is Gig economy, pros&cons",
+        postnum: 4),
     Post(
         title: "Deep fake",
         category: "Artificial Intelligence",
@@ -99,7 +104,8 @@ List getPosts() {
         Survey(question: "Do you think there can be any good aspect on using deep fake technology?")
         ],
         link: "https://electronics.howstuffworks.com/future-tech/deepfake-videos-scary-good.htm",
-        linktext: "Deep fake videos are getting scary good"),
+        linktext: "Deep fake videos are getting scary good",
+        postnum: 5),
     Post(
         title: "Neuralink",
         category: "Artificial Intelligence",
@@ -114,7 +120,8 @@ List getPosts() {
           Survey(question: "Do you think the scale is manageable when a situation like hacking occurs?")
         ],
         link: "https://www.nbcnews.com/tech/tech-news/elon-musk-s-neuralink-puts-computer-chips-pigs-brains-bid-n1238782",
-        linktext: "Elon Musk's Neuralink puts computer chips in pigs' brains in bid to cure diseases"),
+        linktext: "Elon Musk's Neuralink puts computer chips in pigs' brains in bid to cure diseases",
+        postnum: 6),
     Post(
         title: "Privacy vs public interest",
         category: "Security",
@@ -128,7 +135,8 @@ List getPosts() {
           Survey(question: "If so, do you think it is an invasion of privacy for the FBI to release the criminal's cell phone?")
         ],
         link: "https://nakedsecurity.sophos.com/2020/05/20/fbi-finally-unlock-shooters-iphones-berate-apple-for-not-helping/",
-        linktext: "FBI finally unlock shooter’s iPhones, Apple berated for not helping"),
+        linktext: "FBI finally unlock shooter’s iPhones, Apple berated for not helping",
+        postnum: 7),
     Post(
         title: "Role of media platform",
         category: "Media platform",
@@ -144,6 +152,7 @@ List getPosts() {
           Survey(question: "Do you think the media platform is also responsible if a crime has occurred through the media platform?")
         ],
         link: "https://www.vice.com/en/article/z3vxdx/youtube-is-doing-basically-nothing-to-stop-election-misinformation-from-spreading",
-        linktext: "YouTube Is Doing Very Little to Stop Election Misinformation From Spreading"),
+        linktext: "YouTube Is Doing Very Little to Stop Election Misinformation From Spreading",
+        postnum: 8),
   ];
 }

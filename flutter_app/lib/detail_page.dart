@@ -3,9 +3,12 @@ import 'chat_page.dart';
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'dart:math';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+//import 'package:flutter/material.dart';
+//import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:io';
 
 class DetailPage extends StatefulWidget {
   DetailPage({Key key, this.post}) : super(key: key);
@@ -29,24 +32,72 @@ class _DetailPageState extends State<DetailPage> {
 
   @override
   void initState() {
-    for(int i=0; i<widget.post.surveys.length; i++) {
-      List<double> rs = [];
-      double s = 0.0;
+    //Firestore firestore = Firestore.instance;
+    List<int> rs = [];
+    int imsi;
+    int count = 0;
+    /*double s = 0.0;
       for(int j=0; j<5; j++) {
         rs.add(Random().nextInt(300) + 50.0);
         s += rs[j];
-      }
-      dataMaps.add({
-        "strongly agree": rs[0],
-        "agree": rs[1],
-        "neutral": rs[2],
-        "disagree": rs[3],
-        "strongly disagree": rs[4],
-      });
-    }
+      }*/
+
+
+    update_vote();
+
+
     super.initState();
   }
-
+  void update_vote() async {
+    var rs = [];
+    var rs2 = [];
+    print(widget.post.postnum);
+    print("here");
+    var num = widget.post.postnum.toString();
+    print("post"+num);
+    await FirebaseFirestore.instance.collection("posts").doc("post"+num).get().then((DocumentSnapshot documentSnapshot){
+      for(int k=0; k<5; k++){
+        rs.add(documentSnapshot["analytics"][k]);
+        rs2.add(documentSnapshot["analytics2"][k]);
+      }
+    });
+    print(rs);
+    dataMaps.add({
+      "strongly agree": rs[0] +0.0,
+      "agree": rs[1] +0.0,
+      "neutral": rs[2] +0.0,
+      "disagree": rs[3] +0.0,
+      "strongly disagree": rs[4] + 0.0,
+    });
+    dataMaps.add({
+      "strongly agree": rs2[0] +0.0,
+      "agree": rs2[1] +0.0,
+      "neutral": rs2[2] +0.0,
+      "disagree": rs2[3] +0.0,
+      "strongly disagree": rs2[4] + 0.0,
+    });
+  }
+  void set_variables() async {
+    var num = widget.post.postnum.toString();
+    var rs = [];
+    var rs2 = [];
+    await FirebaseFirestore.instance.collection("posts").doc("post"+num).get().then((DocumentSnapshot documentSnapshot) {
+      for (int k = 0; k < 5; k++) {
+        rs.add(documentSnapshot["analytics"][k]);
+        rs2.add(documentSnapshot["analytics2"][k]);
+      }
+    });
+    for (int index=0; index<2; index++) {
+      int ind = (widget.post.surveys[index].value).toInt();
+      if (index == 0){
+        rs[ind] = rs[ind]+1;
+      }else{
+        rs2[ind] = rs2[ind]+1;
+      }
+    }
+    FirebaseFirestore.instance.collection("posts").doc("post"+num).update({"analytics" : rs});
+    FirebaseFirestore.instance.collection("posts").doc("post"+num).update({"analytics2" : rs2});
+  }
   @override
   Widget build(BuildContext context) {
     final topContentText = Column(
@@ -186,7 +237,12 @@ class _DetailPageState extends State<DetailPage> {
         padding: EdgeInsets.symmetric(vertical: 16.0),
         width: MediaQuery.of(context).size.width,
         child: RaisedButton(
-          onPressed: () => setState(() {page = 1;}),
+          onPressed: () => {
+            set_variables(),
+            setState(() {
+              page = 1;
+            }),
+          },
           color: Color.fromRGBO(58, 66, 86, 1.0),
           child:
               Text("Analyze the responses", style: TextStyle(color: Colors.white)),
