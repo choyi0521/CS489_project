@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "352000307800",
+    "project_id": "ethics-50160",
+    "storage_bucket": "ethics-50160.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:352000307800:android:8c7afe585499448164d02d",
+        "android_client_info": {
+          "package_name": "com.example.flutter_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "352000307800-e54gh2jmi5proktonr8u2s7omeot8f4i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiXC7El2XK5YLTa78Sjnyr9pT1Yo10ERk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "352000307800-e54gh2jmi5proktonr8u2s7omeot8f4i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
