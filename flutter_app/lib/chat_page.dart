@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dash_chat/dash_chat.dart';
 import 'model/post.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatPage extends StatefulWidget {
   final ChatUser user = ChatUser(
@@ -18,11 +19,20 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-
   void onSend(ChatMessage message) {
     setState(() {
       widget.post.messages.add(message);
+      set_array(message.text);
     });
+  }
+  void set_array(String message) async {
+    var rs = [];
+    await FirebaseFirestore.instance.collection("posts").doc("post"+widget.post.postnum.toString()).get().then((DocumentSnapshot documentSnapshot){
+      rs =  documentSnapshot["chat"];
+    });
+    rs.add(message);
+
+    await FirebaseFirestore.instance.collection("posts").doc("post"+widget.post.postnum.toString()).update({"chat":rs});
   }
 
   @override

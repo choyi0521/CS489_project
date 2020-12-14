@@ -3,8 +3,7 @@ import 'chat_page.dart';
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'dart:math';
-//import 'package:flutter/material.dart';
-//import 'package:flutter/services.dart';
+import 'package:dash_chat/dash_chat.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -32,21 +31,32 @@ class _DetailPageState extends State<DetailPage> {
 
   @override
   void initState() {
-    //Firestore firestore = Firestore.instance;
-    List<int> rs = [];
-    int imsi;
-    int count = 0;
-    /*double s = 0.0;
-      for(int j=0; j<5; j++) {
-        rs.add(Random().nextInt(300) + 50.0);
-        s += rs[j];
-      }*/
-
-
     update_vote();
-
+    set_message();
 
     super.initState();
+  }
+  void set_message() {
+    List<ChatMessage> Messages = [];
+    void message_set() async {
+      var rs = [];
+      await FirebaseFirestore.instance.collection("posts").doc("post"+widget.post.postnum.toString()).get().then((DocumentSnapshot documentSnapshot){
+        rs =  documentSnapshot["chat"];
+      });
+      for(int i = 0; i<rs.length; i++){
+        Messages.add(ChatMessage(
+            text: rs[i],
+            user: ChatUser(
+                name: "nubjuk",
+                uid: "nubjuk",
+                avatar: "https://pbs.twimg.com/profile_images/536509461204987905/BGuldKRe_400x400.png"
+            ),
+            createdAt: DateTime.now()
+        ));
+      }
+      widget.post.messages = Messages;
+    }
+    message_set();
   }
   void update_vote() async {
     var rs = [];
