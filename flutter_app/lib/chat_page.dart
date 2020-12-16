@@ -31,8 +31,22 @@ class _ChatPageState extends State<ChatPage> {
       rs =  documentSnapshot["chat"];
     });
     rs.add(message);
-
     await FirebaseFirestore.instance.collection("posts").doc("post"+widget.post.postnum.toString()).update({"chat":rs});
+    await FirebaseFirestore.instance.collection("posts").doc("post"+widget.post.postnum.toString()).get().then((DocumentSnapshot documentSnapshot){
+      rs = documentSnapshot["user"];
+    });
+    rs.add(widget.user.name);
+    await FirebaseFirestore.instance.collection("posts").doc("post"+widget.post.postnum.toString()).update({"user":rs});
+    await FirebaseFirestore.instance.collection("posts").doc("post"+widget.post.postnum.toString()).get().then((DocumentSnapshot documentSnapshot){
+      rs = documentSnapshot["icon"];
+    });
+    rs.add(widget.user.avatar);
+    await FirebaseFirestore.instance.collection("posts").doc("post"+widget.post.postnum.toString()).update({"icon":rs});
+    await FirebaseFirestore.instance.collection("posts").doc("post"+widget.post.postnum.toString()).get().then((DocumentSnapshot documentSnapshot){
+      rs = documentSnapshot["timeline"];
+    });
+    rs.add(DateTime.now());
+    await FirebaseFirestore.instance.collection("posts").doc("post"+widget.post.postnum.toString()).update({"timeline":rs});
   }
 
   @override

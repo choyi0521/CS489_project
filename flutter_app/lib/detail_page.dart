@@ -39,17 +39,29 @@ class _DetailPageState extends State<DetailPage> {
   void set_message() {
     List<ChatMessage> Messages = [];
     void message_set() async {
-      var rs = [];
+      var rs1 = [];
+      var rs2 = [];
+      var rs3 = [];
+      var rs4 = [];
       await FirebaseFirestore.instance.collection("posts").doc("post"+widget.post.postnum.toString()).get().then((DocumentSnapshot documentSnapshot){
-        rs =  documentSnapshot["chat"];
+        rs1 =  documentSnapshot["chat"];
       });
-      for(int i = 0; i<rs.length; i++){
+      await FirebaseFirestore.instance.collection("posts").doc("post"+widget.post.postnum.toString()).get().then((DocumentSnapshot documentSnapshot){
+        rs2 =  documentSnapshot["user"];
+      });
+      await FirebaseFirestore.instance.collection("posts").doc("post"+widget.post.postnum.toString()).get().then((DocumentSnapshot documentSnapshot){
+        rs3 =  documentSnapshot["icon"];
+      });
+      await FirebaseFirestore.instance.collection("posts").doc("post"+widget.post.postnum.toString()).get().then((DocumentSnapshot documentSnapshot){
+        rs4 =  documentSnapshot["timeline"];
+      });
+      for(int i = 0; i<rs1.length; i++){
         Messages.add(ChatMessage(
-            text: rs[i],
+            text: rs1[i],
             user: ChatUser(
-                name: "nubjuk",
-                uid: "nubjuk",
-                avatar: "https://pbs.twimg.com/profile_images/536509461204987905/BGuldKRe_400x400.png"
+                name: rs2[i],
+                uid:  rs2[i],
+                avatar: rs3[i]
             ),
             createdAt: DateTime.now()
         ));
