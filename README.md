@@ -17,8 +17,9 @@ The flutter android apk which is the built based on our code. You can download i
 ### flutter_app
 
 The entire android studio folder.
+
 Need to get packages before you run the code in your own device.
-- run 'flutter get packages' or 'flutter get pub' in your terminal
+(Run 'flutter get packages' or 'flutter get pub' in your terminal)
 
 Main codes in the lib folder. 
 - main.dart : The main title screen.
