@@ -17,10 +17,10 @@ The flutter android apk which is the built based on our code. You can download i
 ### flutter_app
 
 The entire android studio folder.
+Need to get packages before you run the code in your own device.
+- run 'flutter get packages' or 'flutter get pub' in your terminal
 
-Need to get packages before you run the code in your own device.(run 'flutter get packages' or 'flutter get pub' in your terminal)
-
-main codes in the lib folder. 
+Main codes in the lib folder. 
 - main.dart : The main title screen.
 - detail_page.dart : The post viewing and graph page.
 - chat_page.dart : The chatting page.
