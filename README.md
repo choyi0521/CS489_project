@@ -1,6 +1,7 @@
 # CS489_Team10_Project
 
 A flutter android application that gathers personal opinions against social ethical issues.
+We refered [shubie's repo](https://github.com/shubie/Beautiful-List-UI-and-detail-page) to make list, post UIs.
 
 ## Developed environment
 - Android Studio
